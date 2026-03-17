@@ -9,7 +9,7 @@
 </head>
 <body class="bg-transparent">
     <div class="w-screen h-screen flex justify-center items-center">
-        <div class="border-2 border-[#b8860b] p-5 text-[#eeeeee] bg-gradient-to-br min-w-[50vw] from-[#1a1a1a] to-[#2a2a00] rounded-lg shadow-xl shadow-[#b8860b]">
+        <div class="border-2 border-[#b8860b] p-5 text-[#eeeeee] bg-gradient-to-br min-w-[50vw] from-[#0a0a0a] to-[#1a1500] rounded-lg shadow-xl shadow-[#b8860b]" style="background-color:#0a0a0a">
             <h1 class="text-center text-2xl font-bold" style="color:#ffd700"><%= cnf.name %> Menu</h1>
             <p style="color:#c9a84c" class="opacity-70">You are now entering the login page of this server. Please enter your <span style="color:#ffd700" class="font-semibold">GrowID</span> and <span style="color:#ffd700" class="font-semibold">Password</span> if you already have an account, or log in as a guest.</p>
             <button type="button"
@@ -33,23 +33,23 @@
                         value=""
                     />
                     <label for="loginGrowId" class="block text-white text-md">GrowID:</label>
-                    <div class="flex items-center border-2 border-[#b8860b] rounded bg-[#1a1a1a] px-3 py-1 gap-2">
+                    <div class="flex items-center border-2 border-[#b8860b] rounded px-3 py-1 gap-2" style="background-color:#0a0a0a">
                         <i class="fas fa-user mr-1 text-md" style="color:#ffd700"></i>
-                        <input type="text" name="growId" id="loginGrowId" class="w-full bg-[#1a1a1a] text-white text-md placeholder-[#c9a84c] focus:outline-none" placeholder="Enter your growid" required>
+                        <input type="text" name="growId" id="loginGrowId" class="w-full text-white text-md placeholder-[#c9a84c] focus:outline-none" style="background-color:#0a0a0a" placeholder="Enter your growid" required>
                     </div>
                 </div>
                 <div class="mb-1">
                     <label for="loginPassword" class="block text-white text-md">Password:</label>
-                    <div class="flex items-center border-2 border-[#b8860b] rounded bg-[#1a1a1a] px-3 py-1 gap-2">
+                    <div class="flex items-center border-2 border-[#b8860b] rounded px-3 py-1 gap-2" style="background-color:#0a0a0a">
                         <i class="fas fa-lock mr-1 text-md" style="color:#ffd700"></i>
-                        <input type="password" name="password" id="loginPassword" class="w-full bg-[#1a1a1a] text-white text-md placeholder-[#c9a84c] focus:outline-none" placeholder="Enter your password" required>
+                        <input type="password" name="password" id="loginPassword" class="w-full text-white text-md placeholder-[#c9a84c] focus:outline-none" style="background-color:#0a0a0a" placeholder="Enter your password" required>
                         <button type="button" id="toggleLogPassword" class="ml-2 focus:outline-none text-xs" style="color:#ffd700">
                             <i class="fas fa-eye-slash"></i>
                         </button>
                     </div>
                 </div>
                 <div class="flex justify-end items-center flex-col md:flex-row gap-2 mt-3">
-                    <button id="loginButton" type="submit" class="px-2 py-1 rounded text-black text-xl font-bold w-full transition duration-300 ease-in-out transform" style="background-color:#ffd700; hover:background-color:#c9a84c">Login</button>
+                    <button id="loginButton" type="submit" class="px-2 py-1 rounded text-black text-xl font-bold w-full transition duration-300 ease-in-out transform" style="background-color:#ffd700">Login</button>
                     <button id="regisButton" type="button" class="px-2 py-1 rounded text-black text-xl font-bold w-full transition duration-300 ease-in-out transform" style="background-color:#ffd700">Create New GrowID</button>
                 </div>
             </form>
