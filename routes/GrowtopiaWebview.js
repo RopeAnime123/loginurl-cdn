@@ -3,7 +3,8 @@ const fs = require('fs');
 const crypto = require('crypto');
 const cnf = require(path.join(__dirname, '..', 'Config.js'));
 
-const STORE_FILE = path.join(__dirname, '..', 'loginStore.json');
+// Gunakan /tmp karena Vercel read-only
+const STORE_FILE = '/tmp/loginStore.json';
 
 // Load dari file saat server start
 let loginStore = {};
@@ -32,16 +33,14 @@ module.exports = (app) => {
         if (isIOS && data) {
             let sessionId = req.cookies?.iosSession;
 
-            // Buat sessionId baru kalau belum ada
             if (!sessionId) {
                 sessionId = crypto.randomBytes(32).toString('hex');
                 res.cookie('iosSession', sessionId, {
-                    maxAge: 365 * 24 * 60 * 60 * 1000, // 1 tahun
+                    maxAge: 365 * 24 * 60 * 60 * 1000,
                     httpOnly: true
                 });
             }
 
-            // Simpan/update token berdasarkan sessionId unik
             loginStore[sessionId] = data;
             saveStore();
         }
