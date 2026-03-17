@@ -6,12 +6,56 @@
     <title>SVPS Login Menu</title>
     <link rel="stylesheet" href="/base.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .card {
+            background: linear-gradient(145deg, #0d0d0d, #1a1400);
+            border: 1px solid #8a6a00;
+            box-shadow: 0 0 30px rgba(180, 140, 0, 0.15), 0 0 60px rgba(180, 140, 0, 0.05);
+        }
+        .input-box {
+            background-color: #111111;
+            border: 1px solid #5a4500;
+            transition: border-color 0.3s;
+        }
+        .input-box:focus-within {
+            border-color: #c9a000;
+            box-shadow: 0 0 8px rgba(201, 160, 0, 0.3);
+        }
+        .input-box input {
+            background-color: #111111;
+            color: #f0f0f0;
+        }
+        .input-box input::placeholder {
+            color: #5a4d2a;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #c9a000, #8a6a00);
+            color: #0d0d0d;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e0b800, #a07800);
+            box-shadow: 0 0 12px rgba(201, 160, 0, 0.4);
+        }
+        .divider {
+            border-color: #2a2000;
+        }
+        h1 {
+            background: linear-gradient(90deg, #c9a000, #ffe066, #c9a000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+    </style>
 </head>
 <body class="bg-transparent">
     <div class="w-screen h-screen flex justify-center items-center">
-        <div class="border-2 border-[#b8860b] p-5 text-[#eeeeee] bg-gradient-to-br min-w-[50vw] from-[#0a0a0a] to-[#1a1500] rounded-lg shadow-xl shadow-[#b8860b]" style="background-color:#0a0a0a">
-            <h1 class="text-center text-2xl font-bold" style="color:#ffd700"><%= cnf.name %> Menu</h1>
-            <p style="color:#c9a84c" class="opacity-70">You are now entering the login page of this server. Please enter your <span style="color:#ffd700" class="font-semibold">GrowID</span> and <span style="color:#ffd700" class="font-semibold">Password</span> if you already have an account, or log in as a guest.</p>
+        <div class="card p-6 text-[#eeeeee] min-w-[50vw] rounded-xl">
+            <h1 class="text-center text-2xl font-bold mb-1"><%= cnf.name %> Menu</h1>
+            <hr class="divider mb-3">
+            <p class="text-sm mb-4" style="color:#7a6030">You are now entering the login page of this server. Please enter your <span style="color:#c9a000" class="font-semibold">GrowID</span> and <span style="color:#c9a000" class="font-semibold">Password</span> if you already have an account, or log in as a guest.</p>
             <button type="button"
                 class="btn btn-primary hidden"
                 data-toggle="modal"
@@ -21,36 +65,36 @@
                 data-keyboard="false"
                 hidden
             ></button>
-            <form 
+            <form
             action="/player/growid/login/validate" accept-charset="UTF-8"
             role="form"
             required="required"
             autocomplete="off" method="post" class="mt-3">
-                <div class="mb-1">
+                <div class="mb-3">
                     <input
                         name="_token"
                         type="hidden"
                         value=""
                     />
-                    <label for="loginGrowId" class="block text-white text-md">GrowID:</label>
-                    <div class="flex items-center border-2 border-[#b8860b] rounded px-3 py-1 gap-2" style="background-color:#0a0a0a">
-                        <i class="fas fa-user mr-1 text-md" style="color:#ffd700"></i>
-                        <input type="text" name="growId" id="loginGrowId" class="w-full text-white text-md placeholder-[#c9a84c] focus:outline-none" style="background-color:#0a0a0a" placeholder="Enter your growid" required>
+                    <label for="loginGrowId" class="block text-sm mb-1" style="color:#9a7a20">GrowID</label>
+                    <div class="input-box flex items-center rounded-lg px-3 py-2 gap-2">
+                        <i class="fas fa-user text-sm" style="color:#c9a000"></i>
+                        <input type="text" name="growId" id="loginGrowId" class="w-full text-sm focus:outline-none" placeholder="Enter your GrowID" required>
                     </div>
                 </div>
-                <div class="mb-1">
-                    <label for="loginPassword" class="block text-white text-md">Password:</label>
-                    <div class="flex items-center border-2 border-[#b8860b] rounded px-3 py-1 gap-2" style="background-color:#0a0a0a">
-                        <i class="fas fa-lock mr-1 text-md" style="color:#ffd700"></i>
-                        <input type="password" name="password" id="loginPassword" class="w-full text-white text-md placeholder-[#c9a84c] focus:outline-none" style="background-color:#0a0a0a" placeholder="Enter your password" required>
-                        <button type="button" id="toggleLogPassword" class="ml-2 focus:outline-none text-xs" style="color:#ffd700">
+                <div class="mb-4">
+                    <label for="loginPassword" class="block text-sm mb-1" style="color:#9a7a20">Password</label>
+                    <div class="input-box flex items-center rounded-lg px-3 py-2 gap-2">
+                        <i class="fas fa-lock text-sm" style="color:#c9a000"></i>
+                        <input type="password" name="password" id="loginPassword" class="w-full text-sm focus:outline-none" placeholder="Enter your Password" required>
+                        <button type="button" id="toggleLogPassword" class="focus:outline-none text-xs" style="color:#c9a000">
                             <i class="fas fa-eye-slash"></i>
                         </button>
                     </div>
                 </div>
-                <div class="flex justify-end items-center flex-col md:flex-row gap-2 mt-3">
-                    <button id="loginButton" type="submit" class="px-2 py-1 rounded text-black text-xl font-bold w-full transition duration-300 ease-in-out transform" style="background-color:#ffd700">Login</button>
-                    <button id="regisButton" type="button" class="px-2 py-1 rounded text-black text-xl font-bold w-full transition duration-300 ease-in-out transform" style="background-color:#ffd700">Create New GrowID</button>
+                <div class="flex flex-col md:flex-row gap-2">
+                    <button id="loginButton" type="submit" class="btn-gold px-3 py-2 rounded-lg text-base w-full">Login</button>
+                    <button id="regisButton" type="button" class="btn-gold px-3 py-2 rounded-lg text-base w-full">Create New GrowID</button>
                 </div>
             </form>
         </div>
@@ -74,16 +118,13 @@
         });
     
         document.getElementById("regisButton").addEventListener("click", function () {
-         const token = btoa(`_token=NONE&growId=&password=`);
-
+            const token = btoa(`_token=NONE&growId=&password=`);
             window.location.href = "/player/growid/login/validate?data=" + encodeURIComponent(token);
-    });
+        });
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-
             const token = btoa(`_token=NONE&growId=${growId.value}&password=${password.value}`);
-
             window.location.href = "/player/growid/login/validate?data=" + encodeURIComponent(token);
         });
     </script>
