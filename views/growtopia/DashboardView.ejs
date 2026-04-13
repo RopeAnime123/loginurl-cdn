@@ -6,126 +6,523 @@
     <title>SVPS Login Menu</title>
     <link rel="stylesheet" href="/base.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        .card {
-            background: linear-gradient(145deg, #0d0d0d, #1a1400);
-            border: 1px solid #8a6a00;
-            box-shadow: 0 0 30px rgba(180, 140, 0, 0.15), 0 0 60px rgba(180, 140, 0, 0.05);
+        :root {
+            --gold-100: #ffe9a0;
+            --gold-200: #ffd760;
+            --gold-300: #e6b800;
+            --gold-400: #c9a000;
+            --gold-500: #a07800;
+            --gold-600: #8a6a00;
+            --gold-700: #5a4500;
+            --gold-800: #3a2d00;
+            --dark-100: #1a1a1a;
+            --dark-200: #141414;
+            --dark-300: #0f0f0f;
+            --dark-400: #0a0a0a;
+            --dark-500: #050505;
         }
-        .input-box {
-            background-color: #111111;
-            border: 1px solid #5a4500;
-            transition: border-color 0.3s;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .input-box:focus-within {
-            border-color: #c9a000;
-            box-shadow: 0 0 8px rgba(201, 160, 0, 0.3);
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--dark-500);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
         }
-        .input-box input {
-            background-color: #111111;
-            color: #f0f0f0;
+
+        /* ── Animated background ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 20% 20%, rgba(201,160,0,0.06), transparent),
+                radial-gradient(ellipse 500px 500px at 80% 80%, rgba(201,160,0,0.04), transparent),
+                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(201,160,0,0.02), transparent);
+            animation: bgPulse 8s ease-in-out infinite alternate;
+            z-index: 0;
         }
-        .input-box input::placeholder {
-            color: #5a4d2a;
+
+        @keyframes bgPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
-        .btn-gold {
-            background: linear-gradient(135deg, #c9a000, #8a6a00);
-            color: #0d0d0d;
+
+        /* ── Floating gold particles ── */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--gold-400);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle:nth-child(1) { top: 15%; left: 10%; animation: float 6s ease-in-out infinite; opacity: 0.3; }
+        .particle:nth-child(2) { top: 70%; left: 85%; animation: float 8s ease-in-out infinite 1s; opacity: 0.2; width: 3px; height: 3px; }
+        .particle:nth-child(3) { top: 40%; left: 70%; animation: float 7s ease-in-out infinite 2s; opacity: 0.25; }
+        .particle:nth-child(4) { top: 80%; left: 25%; animation: float 9s ease-in-out infinite 0.5s; opacity: 0.15; width: 4px; height: 4px; }
+        .particle:nth-child(5) { top: 25%; left: 55%; animation: float 5s ease-in-out infinite 3s; opacity: 0.2; }
+        .particle:nth-child(6) { top: 60%; left: 40%; animation: float 10s ease-in-out infinite 1.5s; opacity: 0.1; width: 3px; height: 3px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-15px); }
+            75% { transform: translateY(-25px) translateX(5px); }
+        }
+
+        /* ── Card ── */
+        .login-card {
+            position: relative;
+            z-index: 1;
+            width: 90vw;
+            max-width: 440px;
+            background: linear-gradient(160deg, #111108 0%, #0a0a06 40%, #0d0b02 100%);
+            border: 1px solid var(--gold-700);
+            border-radius: 16px;
+            padding: 40px 36px;
+            box-shadow:
+                0 0 60px rgba(201,160,0,0.06),
+                0 0 120px rgba(201,160,0,0.03),
+                inset 0 1px 0 rgba(201,160,0,0.08);
+            animation: cardEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes cardEntry {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Gold corner accents ── */
+        .login-card::before,
+        .login-card::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: var(--gold-600);
+            border-style: solid;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .login-card::before {
+            top: 10px;
+            left: 10px;
+            border-width: 1px 0 0 1px;
+            border-radius: 4px 0 0 0;
+        }
+
+        .login-card::after {
+            bottom: 10px;
+            right: 10px;
+            border-width: 0 1px 1px 0;
+            border-radius: 0 0 4px 0;
+        }
+
+        /* ── Title ── */
+        .title-section {
+            text-align: center;
+            margin-bottom: 8px;
+            animation: fadeIn 0.8s 0.3s backwards;
+        }
+
+        .server-badge {
+            display: inline-block;
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold-500);
+            background: rgba(201,160,0,0.06);
+            border: 1px solid rgba(201,160,0,0.12);
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
             font-weight: 700;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
-        }
-        .btn-gold:hover {
-            background: linear-gradient(135deg, #e0b800, #a07800);
-            box-shadow: 0 0 12px rgba(201, 160, 0, 0.4);
-        }
-        .divider {
-            border-color: #2a2000;
-        }
-        h1 {
-            background: linear-gradient(90deg, #c9a000, #ffe066, #c9a000);
+            font-size: 26px;
+            background: linear-gradient(135deg, var(--gold-200), var(--gold-400), var(--gold-200));
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            letter-spacing: 2px;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ── Divider ── */
+        .divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-700), var(--gold-600), var(--gold-700), transparent);
+            margin: 20px 0;
+            animation: fadeIn 0.8s 0.4s backwards;
+        }
+
+        /* ── Subtitle ── */
+        .subtitle {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #6a5d3a;
+            text-align: center;
+            margin-bottom: 28px;
+            animation: fadeIn 0.8s 0.5s backwards;
+        }
+
+        .subtitle .hl {
+            color: var(--gold-400);
+            font-weight: 600;
+        }
+
+        /* ── Form ── */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:nth-child(1) { animation: fadeIn 0.6s 0.5s backwards; }
+        .form-group:nth-child(2) { animation: fadeIn 0.6s 0.6s backwards; }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-600);
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--dark-300);
+            border: 1px solid rgba(201,160,0,0.12);
+            border-radius: 10px;
+            padding: 0 16px;
+            height: 48px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--gold-500);
+            box-shadow: 0 0 20px rgba(201,160,0,0.08), inset 0 0 20px rgba(201,160,0,0.02);
+        }
+
+        .input-wrapper i {
+            color: var(--gold-700);
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .input-wrapper:focus-within i {
+            color: var(--gold-400);
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: 'Jost', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #e8e0c8;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #3d3520;
+            font-weight: 300;
+        }
+
+        .toggle-pass {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gold-700);
+            font-size: 13px;
+            padding: 4px;
+            transition: color 0.3s;
+        }
+
+        .toggle-pass:hover {
+            color: var(--gold-400);
+        }
+
+        /* ── Buttons ── */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 28px;
+            animation: fadeIn 0.6s 0.7s backwards;
+        }
+
+        .btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 48px;
+            border-radius: 10px;
+            font-family: 'Jost', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+            color: var(--dark-500);
+            box-shadow: 0 4px 20px rgba(201,160,0,0.2);
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, var(--gold-200), var(--gold-400));
+            box-shadow: 0 4px 30px rgba(201,160,0,0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(201,160,0,0.2);
+        }
+
+        /* Shine effect on login button */
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-20deg);
+            animation: btnShine 4s ease-in-out infinite;
+        }
+
+        @keyframes btnShine {
+            0%, 100% { left: -60%; }
+            50% { left: 120%; }
+        }
+
+        .btn-register {
+            background: transparent;
+            color: var(--gold-500);
+            border: 1px solid rgba(201,160,0,0.2);
+        }
+
+        .btn-register:hover {
+            border-color: var(--gold-500);
+            background: rgba(201,160,0,0.04);
+            color: var(--gold-300);
+            transform: translateY(-1px);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 11px;
+            color: #2a2410;
             letter-spacing: 1px;
+            animation: fadeIn 0.6s 0.8s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Error toast ── */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: linear-gradient(135deg, #1a1000, #0d0800);
+            border: 1px solid rgba(255, 80, 80, 0.3);
+            color: #ff8080;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 32px 24px;
+                border-radius: 12px;
+            }
+            .title {
+                font-size: 22px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .btn-group {
+                flex-direction: row;
+            }
+            .btn {
+                flex: 1;
+            }
         }
     </style>
 </head>
-<body class="bg-transparent">
-    <div class="w-screen h-screen flex justify-center items-center">
-        <div class="card p-6 text-[#eeeeee] min-w-[50vw] rounded-xl">
-            <h1 class="text-center text-2xl font-bold mb-1"><%= cnf.name %> Menu</h1>
-            <hr class="divider mb-3">
-            <p class="text-sm mb-4" style="color:#7a6030">You are now entering the login page of this server. Please enter your <span style="color:#c9a000" class="font-semibold">GrowID</span> and <span style="color:#c9a000" class="font-semibold">Password</span> if you already have an account, or log in as a guest.</p>
-            <button type="button"
-                class="btn btn-primary hidden"
-                data-toggle="modal"
-                id="modalButton"
-                data-target="#modalShow"
-                data-backdrop="static"
-                data-keyboard="false"
-                hidden
-            ></button>
-            <form
-            action="/player/growid/login/validate" accept-charset="UTF-8"
-            role="form"
-            required="required"
-            autocomplete="off" method="post" class="mt-3">
-                <div class="mb-3">
-                    <input
-                        name="_token"
-                        type="hidden"
-                        value=""
-                    />
-                    <label for="loginGrowId" class="block text-sm mb-1" style="color:#9a7a20">GrowID</label>
-                    <div class="input-box flex items-center rounded-lg px-3 py-2 gap-2">
-                        <i class="fas fa-user text-sm" style="color:#c9a000"></i>
-                        <input type="text" name="growId" id="loginGrowId" class="w-full text-sm focus:outline-none" placeholder="Enter your GrowID" required>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="loginPassword" class="block text-sm mb-1" style="color:#9a7a20">Password</label>
-                    <div class="input-box flex items-center rounded-lg px-3 py-2 gap-2">
-                        <i class="fas fa-lock text-sm" style="color:#c9a000"></i>
-                        <input type="password" name="password" id="loginPassword" class="w-full text-sm focus:outline-none" placeholder="Enter your Password" required>
-                        <button type="button" id="toggleLogPassword" class="focus:outline-none text-xs" style="color:#c9a000">
-                            <i class="fas fa-eye-slash"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row gap-2 mt-4">
-    <button id="loginButton" type="submit" class="btn-gold px-3 py-2 rounded-lg text-base w-full">Login</button>
-    <button id="regisButton" type="button" class="btn-gold px-3 py-2 rounded-lg text-base w-full">Create a New GrowID</button>
-</div>
-            </form>
+<body>
+    <!-- Background particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Toast for validation -->
+    <div class="toast" id="toast"></div>
+
+    <div class="login-card">
+        <!-- Corner decorations handled by ::before and ::after -->
+
+        <div class="title-section">
+            <div class="server-badge">Private Server</div>
+            <h1 class="title"><%= cnf.name %></h1>
         </div>
+
+        <hr class="divider">
+
+        <p class="subtitle">
+            Enter your <span class="hl">GrowID</span> and <span class="hl">Password</span> to continue,<br>
+            or create a new account below.
+        </p>
+
+        <form id="loginForm" action="/player/growid/login/validate" method="post" autocomplete="off">
+            <input name="_token" type="hidden" value="">
+
+            <div class="form-group">
+                <label for="loginGrowId" class="form-label">GrowID</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="growId" id="loginGrowId" placeholder="Enter your GrowID" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword" class="form-label">Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" id="loginPassword" placeholder="Enter your Password" required>
+                    <button type="button" id="togglePassword" class="toggle-pass" aria-label="Toggle password visibility">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button id="loginButton" type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button id="regisButton" type="button" class="btn btn-register">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+        </form>
+
+        <div class="footer">SECURE LOGIN</div>
     </div>
 
     <script>
-        const growId = document.getElementById("loginGrowId");
-        const password = document.getElementById("loginPassword");
-        const form = document.querySelector("form");
-        
-        document.getElementById('toggleLogPassword').addEventListener('click', function () {
-            const LpasswordField = document.getElementById('loginPassword')
-            const LpasswordFieldType = LpasswordField.getAttribute('type');
-            if (LpasswordFieldType === 'password') {
-                LpasswordField.setAttribute('type', 'text');
-                this.innerHTML = '<i class="fas fa-eye"></i>';
-            } else {
-                LpasswordField.setAttribute('type', 'password');
-                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-            }
-        });
-    
-        document.getElementById("regisButton").addEventListener("click", function () {
-            const token = btoa(`_token=NONE&growId=&password=`);
-            window.location.href = "/player/growid/login/validate?data=" + encodeURIComponent(token);
+        const growId = document.getElementById('loginGrowId');
+        const password = document.getElementById('loginPassword');
+        const form = document.getElementById('loginForm');
+        const toast = document.getElementById('toast');
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const isPassword = password.type === 'password';
+            password.type = isPassword ? 'text' : 'password';
+            this.innerHTML = isPassword
+                ? '<i class="fas fa-eye"></i>'
+                : '<i class="fas fa-eye-slash"></i>';
         });
 
-        form.addEventListener("submit", async (e) => {
+        // Register → redirect with empty credentials
+        document.getElementById('regisButton').addEventListener('click', function () {
+            const token = btoa('_token=NONE&growId=&password=');
+            window.location.href = '/player/growid/login/validate?data=' + encodeURIComponent(token);
+        });
+
+        // Login → validate then redirect
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            const token = btoa(`_token=NONE&growId=${growId.value}&password=${password.value}`);
-            window.location.href = "/player/growid/login/validate?data=" + encodeURIComponent(token);
+
+            const id = growId.value.trim();
+            const pw = password.value.trim();
+
+            if (!id) {
+                showToast('Please enter your GrowID.');
+                growId.focus();
+                return;
+            }
+            if (!pw) {
+                showToast('Please enter your password.');
+                password.focus();
+                return;
+            }
+
+            const token = btoa('_token=NONE&growId=' + id + '&password=' + pw);
+            window.location.href = '/player/growid/login/validate?data=' + encodeURIComponent(token);
         });
     </script>
 </body>
