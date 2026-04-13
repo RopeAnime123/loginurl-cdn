@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "@tailwindcss/cli": "^4.0.8",
+    "@upstash/redis": "^1.37.0",
     "compression": "^1.8.0",
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
