@@ -1,48 +1,34 @@
 const path = require('path');
-const fs = require('fs');
 const crypto = require('crypto');
+const { Redis } = require('@upstash/redis');
 const cnf = require(path.join(__dirname, '..', 'Config.js'));
 
-// Gunakan /tmp karena Vercel read-only
-const STORE_FILE = '/tmp/loginStore.json';
-
-// Load dari file saat server start
-let loginStore = {};
-if (fs.existsSync(STORE_FILE)) {
-    try {
-        loginStore = JSON.parse(fs.readFileSync(STORE_FILE, 'utf8'));
-    } catch {
-        loginStore = {};
-    }
-}
-
-function saveStore() {
-    fs.writeFileSync(STORE_FILE, JSON.stringify(loginStore, null, 2), 'utf8');
-}
+const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
 
 module.exports = (app) => {
     app.all('/player/login/dashboard', (req, res) => {
         res.render('growtopia/DashboardView', { cnf });
     });
 
-    app.all('/player/growid/login/validate', (req, res) => {
+    app.all('/player/growid/login/validate', async (req, res) => {
         const data = decodeURIComponent(req.query.data || '');
         const userAgent = req.headers['user-agent'] || '';
         const isIOS = userAgent.includes('iPhone') || userAgent.includes('iPad');
 
         if (isIOS && data) {
             let sessionId = req.cookies?.iosSession;
-
             if (!sessionId) {
                 sessionId = crypto.randomBytes(32).toString('hex');
                 res.cookie('iosSession', sessionId, {
                     maxAge: 365 * 24 * 60 * 60 * 1000,
-                    httpOnly: true
+                    httpOnly: true,
                 });
             }
-
-            loginStore[sessionId] = data;
-            saveStore();
+            // Simpan ke Upstash Redis, expire 1 tahun
+            await redis.set(`ios:${sessionId}`, data, { ex: 365 * 24 * 60 * 60 });
         }
 
         res.send(`{"status":"success","message":"Account Validated.","token":"${data}","url":"","accountType":"growtopia"}`);
@@ -54,16 +40,16 @@ module.exports = (app) => {
     });
 
     // STEP 2: VALIDATE TOKEN
-    app.all('/player/growid/validate/checktoken', (req, res) => {
+    app.all('/player/growid/validate/checktoken', async (req, res) => {
         const userAgent = req.headers['user-agent'] || '';
         const isIOS = userAgent.includes('iPhone') || userAgent.includes('iPad');
 
         let refreshToken = '';
-
         if (isIOS) {
             const sessionId = req.cookies?.iosSession;
             if (sessionId) {
-                refreshToken = loginStore[sessionId] || '';
+                // Baca dari Upstash Redis
+                refreshToken = (await redis.get(`ios:${sessionId}`)) || '';
             }
         } else {
             refreshToken =
