@@ -72,3 +72,4 @@ app.all('/player/growid/validate/checktoken', async (req, res) => {
         res.send(`{"status":"error","message":"Token check failed.","token":"","url":"","accountType":"growtopia"}`);
     }
 });
+};
