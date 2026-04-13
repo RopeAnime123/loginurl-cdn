@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVPS Login Menu</title>
+    <title>SV-Private-Server Login</title>
     <link rel="stylesheet" href="/base.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -172,6 +172,16 @@
         @keyframes shimmer {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
+        }
+
+        .title-sub {
+            font-family: 'Jost', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold-700);
+            margin-top: 6px;
         }
 
         /* ── Divider ── */
@@ -430,8 +440,9 @@
         <!-- Corner decorations handled by ::before and ::after -->
 
         <div class="title-section">
-            <div class="server-badge">Private Server</div>
-            <h1 class="title"><%= cnf.name %></h1>
+            <div class="server-badge">SV Private Server</div>
+            <h1 class="title">SV-Private-Server</h1>
+            <p class="title-sub">Login Page</p>
         </div>
 
         <hr class="divider">
