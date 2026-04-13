@@ -38,6 +38,10 @@ module.exports = (app) => {
     }
 });
 
+    app.all('/player/growid/checktoken', (req, res) => {
+        res.redirect(307, '/player/growid/validate/checktoken');
+    });
+
 app.all('/player/growid/validate/checktoken', async (req, res) => {
     try {
         const userAgent = req.headers['user-agent'] || '';
